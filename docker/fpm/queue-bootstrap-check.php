@@ -66,6 +66,15 @@ try {
     $existingTables = $statement->fetchAll(PDO::FETCH_COLUMN);
 
     exit(count(array_unique($existingTables)) === count($requiredTables) ? 0 : 1);
-} catch (Throwable) {
+} catch (Throwable $exception) {
+    fwrite(
+        STDERR,
+        sprintf(
+            "Queue bootstrap check failed: %s: %s\n",
+            $exception::class,
+            $exception->getMessage()
+        )
+    );
+
     exit(1);
 }
