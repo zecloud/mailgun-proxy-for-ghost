@@ -28,7 +28,7 @@ class RecordAcceptedNewsletterDelivery
             return;
         }
 
-        $providerMessageId = $event->message->getHeaders()->get('X-Resend-Email-ID')?->getBodyAsString();
+        $providerMessageId = $this->providerMessageId($event, $delivery);
 
         $this->recordDeliveryEvent->handle(
             delivery: $delivery,
@@ -39,5 +39,16 @@ class RecordAcceptedNewsletterDelivery
                 'provider_message_id' => $providerMessageId,
             ], fn (mixed $value): bool => $value !== null),
         );
+    }
+
+    private function providerMessageId(MessageSent $event, NewsletterRequestDelivery $delivery): ?string
+    {
+        $headerMessageId = $event->message->getHeaders()->get('X-Resend-Email-ID')?->getBodyAsString();
+
+        if ($headerMessageId !== null && $headerMessageId !== '') {
+            return $headerMessageId;
+        }
+
+        return $delivery->provider === 'acs' ? $event->sent->getMessageId() : null;
     }
 }

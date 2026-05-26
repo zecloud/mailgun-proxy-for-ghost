@@ -9,6 +9,7 @@ This is Mailgun-compatible proxy built specifically for Ghost newsletters. Ghost
 - Postmark
 - Amazon SES
 - Resend
+- Azure Communication Services
 - [Mailbox](https://github.com/RedberryProducts/mailbox-for-laravel) (faking a mailbox without sending it for real, great for local testing)
 - And more if you install other packages by the community
 
@@ -51,6 +52,20 @@ Enable Resend domain tracking for opens and clicks:
 ```text
 https://resend.com/docs/dashboard/domains/tracking
 ```
+
+To send through Azure Communication Services instead, use:
+
+```dotenv
+MAIL_MAILER=acs
+OUTBOX_PROVIDER=acs
+
+AZURE_COMMUNICATION_ENDPOINT=https://my-resource.communication.azure.com
+AZURE_COMMUNICATION_KEY=base64-azure-access-key
+AZURE_COMMUNICATION_API_VERSION=2023-03-31
+AZURE_COMMUNICATION_DISABLE_TRACKING=false
+```
+
+The app now uses MySQL by default. For Docker Compose, `.env.example` already points the app to the bundled `database` service. For a local MySQL server outside Compose, set `DB_HOST=127.0.0.1`.
 
 ## Ghost configuration
 

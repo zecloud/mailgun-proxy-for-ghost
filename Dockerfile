@@ -10,7 +10,7 @@ ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/relea
 
 RUN apk add --no-cache \
         nginx \
-    && install-php-extensions curl intl mbstring xml zip sqlite3 pdo_mysql pdo_pgsql pgsql opcache exif \
+    && install-php-extensions curl intl mbstring xml zip sqlite3 pdo_mysql opcache exif \
     && rm -rf /tmp/* /var/cache/apk/* /usr/local/bin/install-php-extensions
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -114,7 +114,10 @@ EXPOSE 8080
 ENV APP_ENV=production \
     APP_DEBUG=false \
     LOG_CHANNEL=stderr \
-    DB_CONNECTION=sqlite \
-    DB_DATABASE=/data/database.sqlite
+    DB_CONNECTION=mysql \
+    DB_HOST=database \
+    DB_PORT=3306 \
+    DB_DATABASE=mailgun_proxy \
+    DB_USERNAME=mailgun_proxy
 
 CMD ["/usr/local/bin/hivemind", "/etc/Procfile"]
