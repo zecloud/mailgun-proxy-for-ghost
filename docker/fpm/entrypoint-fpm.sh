@@ -23,7 +23,7 @@ fi
 
 if [ "${RUN_MIGRATIONS:-true}" = "true" ]; then
     echo "Running migrations..."
-    php artisan migrate --force
+    php /run-migrations-with-lock.php
 fi
 
 echo "Optimizing..."

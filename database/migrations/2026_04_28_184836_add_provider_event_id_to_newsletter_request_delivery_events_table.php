@@ -10,6 +10,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (Schema::hasColumn('newsletter_request_delivery_events', 'provider_event_id')) {
+            return;
+        }
+
         Schema::table('newsletter_request_delivery_events', function (Blueprint $table): void {
             $table->string('provider_event_id')->nullable()->after('provider_event');
             $table->unique(['newsletter_request_delivery_id', 'provider_event_id'], 'delivery_event_provider_event_id_unique');
@@ -18,6 +22,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (! Schema::hasColumn('newsletter_request_delivery_events', 'provider_event_id')) {
+            return;
+        }
+
         Schema::table('newsletter_request_delivery_events', function (Blueprint $table): void {
             $table->dropUnique('delivery_event_provider_event_id_unique');
             $table->dropColumn('provider_event_id');

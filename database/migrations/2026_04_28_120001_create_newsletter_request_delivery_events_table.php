@@ -11,6 +11,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (Schema::hasTable('newsletter_request_delivery_events')) {
+            return;
+        }
+
         Schema::create('newsletter_request_delivery_events', function (Blueprint $table): void {
             $table->id();
             $table->foreignIdFor(NewsletterRequestDelivery::class)->constrained()->cascadeOnDelete();
