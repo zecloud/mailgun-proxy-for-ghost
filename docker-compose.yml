@@ -17,7 +17,8 @@ services:
     volumes:
       - data:/data
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     restart: unless-stopped
 
   database:
@@ -31,6 +32,12 @@ services:
       - "3306:3306"
     volumes:
       - mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     restart: unless-stopped
 
 volumes:

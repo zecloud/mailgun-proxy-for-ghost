@@ -118,6 +118,7 @@ ENV APP_ENV=production \
     DB_HOST=database \
     DB_PORT=3306 \
     DB_DATABASE=mailgun_proxy \
-    DB_USERNAME=mailgun_proxy
+    DB_USERNAME=mailgun_proxy \
+    DB_PASSWORD=secret
 
 CMD ["/usr/local/bin/hivemind", "/etc/Procfile"]
