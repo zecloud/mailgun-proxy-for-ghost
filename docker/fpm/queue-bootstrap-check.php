@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__.'/mysql-pdo-options.php';
+
 $connection = getenv('DB_CONNECTION') ?: 'mysql';
 
 $requiredTables = array_values(array_unique(array_filter([
@@ -52,9 +54,7 @@ try {
         sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', $host, $port, $database),
         $username,
         $password,
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        ]
+        buildMysqlPdoOptions()
     );
 
     $placeholders = implode(', ', array_fill(0, count($requiredTables), '?'));

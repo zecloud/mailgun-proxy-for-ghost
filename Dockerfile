@@ -69,6 +69,7 @@ COPY docker/fpm/Procfile /etc/Procfile
 COPY docker/fpm/entrypoint-fpm.sh /entrypoint.sh
 COPY docker/fpm/entrypoint-queue.sh /entrypoint-queue.sh
 COPY docker/fpm/queue-bootstrap-check.php /queue-bootstrap-check.php
+COPY docker/fpm/mysql-pdo-options.php /mysql-pdo-options.php
 COPY docker/fpm/run-migrations-with-lock.php /run-migrations-with-lock.php
 RUN chmod +x /entrypoint.sh /entrypoint-queue.sh
 
