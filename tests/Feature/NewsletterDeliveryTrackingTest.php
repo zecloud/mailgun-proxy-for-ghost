@@ -89,6 +89,46 @@ test('message sent listener ignores duplicate accepted events for the same provi
         ->and($delivery->events->sole()->provider_event_id)->toBe('message.sent:re_123');
 });
 
+test('message sent listener records symfony transport message id when provider header is absent', function () {
+    $delivery = NewsletterRequest::query()->create([
+        'original_request' => ['domain' => 'example.com'],
+    ])->attempts()->create([
+        'started_at' => now(),
+        'finished_at' => now(),
+    ])->deliveries()->create([
+        'domain' => 'example.com',
+        'provider' => 'acs',
+        'recipient' => 'person@example.com',
+        'from' => 'newsletter@example.com',
+        'subject' => 'Hello',
+    ]);
+
+    $message = (new Email())
+        ->from(new Address('newsletter@example.com'))
+        ->to(new Address('person@example.com'))
+        ->subject('Hello')
+        ->text('Body');
+
+    $message->getHeaders()->addTextHeader('X-Newsletter-Delivery-Id', (string) $delivery->id);
+
+    $sentMessage = new SymfonySentMessage($message, new Envelope(
+        sender: new Address('newsletter@example.com'),
+        recipients: [new Address('person@example.com')],
+    ));
+    $sentMessage->setMessageId('acs-message-123');
+
+    resolve(RecordAcceptedNewsletterDelivery::class)->handle(
+        new MessageSent(new \Illuminate\Mail\SentMessage($sentMessage)),
+    );
+
+    $delivery->refresh();
+
+    expect($delivery->latest_event)->toBe('accepted')
+        ->and($delivery->provider_message_id)->toBe('acs-message-123')
+        ->and($delivery->events)->toHaveCount(1)
+        ->and($delivery->events->sole()->provider_event_id)->toBe('message.sent:acs-message-123');
+});
+
 test('mailgun events endpoint returns stored delivery events', function () {
     config()->set('services.mailgun.key', 'test-mailgun-key');
 

@@ -94,7 +94,7 @@ return [
     |
     |   "sqlite"   (default) — auto-configured dedicated SQLite file at
     |               storage/app/mailbox/mailbox.sqlite, zero setup required.
-    |   "database" — bring-your-own connection (MySQL, Postgres, etc.).
+    |   "database" — bring-your-own connection (MySQL, MariaDB, etc.).
     |               Define the connection in config/database.php first.
     |   "file"     — JSON files on disk, no database needed.
     |

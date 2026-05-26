@@ -29,6 +29,11 @@ return [
         'webhook_secret' => env('RESEND_WEBHOOK_SECRET'),
     ],
 
+    'acs' => [
+        'endpoint' => env('AZURE_COMMUNICATION_ENDPOINT'),
+        'key' => env('AZURE_COMMUNICATION_KEY'),
+    ],
+
     'outbox' => [
         'provider' => env('OUTBOX_PROVIDER', env('MAIL_MAILER', 'mailbox')),
     ],

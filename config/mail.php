@@ -31,7 +31,7 @@ return [
     |
     | Supported: "smtp", "sendmail", "mailgun", "ses", "ses-v2",
     |            "postmark", "resend", "log", "array",
-    |            "failover", "roundrobin"
+    |            "acs", "failover", "roundrobin"
     |
     */
 
@@ -63,6 +63,12 @@ return [
 
         'resend' => [
             'transport' => 'resend',
+        ],
+
+        'acs' => [
+            'transport' => 'acs',
+            'api_version' => env('AZURE_COMMUNICATION_API_VERSION', '2023-03-31'),
+            'disable_tracking' => env('AZURE_COMMUNICATION_DISABLE_TRACKING', false),
         ],
 
         'sendmail' => [
