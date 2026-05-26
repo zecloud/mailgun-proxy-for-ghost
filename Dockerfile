@@ -67,7 +67,9 @@ COPY docker/fpm/php-opcache.ini /usr/local/etc/php/conf.d/zz-opcache.ini
 COPY docker/fpm/nginx.conf /etc/nginx/nginx.conf
 COPY docker/fpm/Procfile /etc/Procfile
 COPY docker/fpm/entrypoint-fpm.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY docker/fpm/entrypoint-queue.sh /entrypoint-queue.sh
+COPY docker/fpm/queue-bootstrap-check.php /queue-bootstrap-check.php
+RUN chmod +x /entrypoint.sh /entrypoint-queue.sh
 
 WORKDIR /var/www/html
 
