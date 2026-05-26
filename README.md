@@ -65,7 +65,7 @@ AZURE_COMMUNICATION_API_VERSION=2023-03-31
 AZURE_COMMUNICATION_DISABLE_TRACKING=false
 ```
 
-The app now uses MySQL by default. For Docker Compose, `.env.example` already points the app to the bundled `database` service. For a local MySQL server outside Compose, set `DB_HOST=127.0.0.1`.
+The app now uses MySQL by default. For Docker Compose, `.env.example` already points the app to the bundled `database` service. For a local MySQL server outside Compose, set `DB_HOST=127.0.0.1`. If your MySQL server enforces TLS (for example Azure Database for MySQL), set `MYSQL_ATTR_SSL_CA` to a CA bundle path such as `/etc/ssl/certs/ca-certificates.crt`.
 
 ## Ghost configuration
 

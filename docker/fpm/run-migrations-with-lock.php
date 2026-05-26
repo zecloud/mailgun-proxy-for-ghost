@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__.'/mysql-pdo-options.php';
+
 $runMigrations = static function (): int {
     passthru(escapeshellarg(PHP_BINARY).' artisan migrate --force', $exitCode);
 
@@ -29,9 +31,7 @@ try {
         sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', $host, $port, $database),
         $username,
         $password,
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        ]
+        buildMysqlPdoOptions()
     );
 
     $statement = $pdo->prepare('select get_lock(?, ?)');
